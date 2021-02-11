@@ -42,4 +42,8 @@ public class NewCardProposalRequest {
     public AddressRequest getAddress() {
         return address;
     }
+
+    public String getPersonalDocument() {
+        return personalDocument;
+    }
 }
