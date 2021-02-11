@@ -15,8 +15,8 @@ public class CardProposal {
     private String name;
     @Column(nullable = false)
     private String email;
-    @Column(nullable = false)
-    private String address;
+    @Embedded
+    private Address address;
     @Column(nullable = false)
     private BigDecimal salary;
 
@@ -25,7 +25,7 @@ public class CardProposal {
 
     }
 
-    public CardProposal(String personalDocument, String email, String name, String address, BigDecimal salary) {
+    public CardProposal(String personalDocument, String email, String name, Address address, BigDecimal salary) {
         this.personalDocument = personalDocument;
         this.email = email;
         this.name = name;
