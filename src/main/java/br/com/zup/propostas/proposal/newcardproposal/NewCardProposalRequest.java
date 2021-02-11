@@ -46,4 +46,8 @@ public class NewCardProposalRequest {
     public String getPersonalDocument() {
         return personalDocument;
     }
+
+    public String getName() {
+        return name;
+    }
 }

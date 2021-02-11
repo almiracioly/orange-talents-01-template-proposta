@@ -19,6 +19,8 @@ public class CardProposal {
     private Address address;
     @Column(nullable = false)
     private BigDecimal salary;
+    @Enumerated(EnumType.STRING)
+    private CardProposalStatus status;
 
     @Deprecated
     public CardProposal() {
@@ -36,4 +38,17 @@ public class CardProposal {
     public Long getId() {
         return id;
     }
+
+    public String getPersonalDocument() {
+        return personalDocument;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void updateStatus(CardProposalStatus cardProposalStatus) {
+        status = cardProposalStatus;
+    }
+
 }
