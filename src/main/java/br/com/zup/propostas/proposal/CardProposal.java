@@ -21,6 +21,7 @@ public class CardProposal {
     private BigDecimal salary;
     @Enumerated(EnumType.STRING)
     private CardProposalStatus status;
+    private String approvedCardNumber;
 
     @Deprecated
     public CardProposal() {
@@ -51,4 +52,7 @@ public class CardProposal {
         status = cardProposalStatus;
     }
 
+    public void setApprovedCardNumber(String cardNumber) {
+        approvedCardNumber = cardNumber;
+    }
 }
