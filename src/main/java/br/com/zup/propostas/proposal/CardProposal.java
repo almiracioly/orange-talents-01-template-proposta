@@ -48,6 +48,10 @@ public class CardProposal {
         return name;
     }
 
+    public CardProposalStatus getStatus() {
+        return status;
+    }
+
     public void updateStatus(CardProposalStatus cardProposalStatus) {
         status = cardProposalStatus;
     }
