@@ -1,8 +1,6 @@
 package br.com.zup.propostas.proposal.approvedcardassociation;
 
-import br.com.zup.propostas.proposal.CardProposal;
-import br.com.zup.propostas.proposal.CardProposalRepository;
-import br.com.zup.propostas.proposal.CardProposalStatus;
+import br.com.zup.propostas.proposal.*;
 import feign.FeignException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,10 +15,12 @@ public class ApprovedCardChecker {
 
     private CardProposalRepository cardProposalRepository;
     private CardClient cardClient;
+    private CardRepository cardRepository;
 
-    public ApprovedCardChecker(CardProposalRepository cardProposalRepository, CardClient cardClient) {
+    public ApprovedCardChecker(CardProposalRepository cardProposalRepository, CardClient cardClient, CardRepository cardRepository) {
         this.cardProposalRepository = cardProposalRepository;
         this.cardClient = cardClient;
+        this.cardRepository = cardRepository;
     }
 
     @Scheduled(fixedDelay = 10000)
@@ -33,12 +33,19 @@ public class ApprovedCardChecker {
         allByStatus.forEach(cardProposal -> {
             try {
                 ApprovedCardResponse approvedCardResponse = cardClient.checkForCardByProposalId(cardProposal.getId().toString());
-                cardProposal.setApprovedCardNumber(approvedCardResponse.getId());
-                cardProposal.updateStatus(CardProposalStatus.CARTAO_RECEBIDO);
-                cardProposalRepository.save(cardProposal);
+                Card card = approvedCardResponse.toModel(cardProposal);
+                cardRepository.save(card);
+
+                updateCardProposalWithApprovedCardInfo(cardProposal, approvedCardResponse);
             } catch (FeignException exception) {
                 return;
             }
         });
+    }
+
+    private void updateCardProposalWithApprovedCardInfo(CardProposal cardProposal, ApprovedCardResponse approvedCardResponse) {
+        cardProposal.setApprovedCardNumber(approvedCardResponse.getId());
+        cardProposal.updateStatus(CardProposalStatus.CARTAO_RECEBIDO);
+        cardProposalRepository.save(cardProposal);
     }
 }
