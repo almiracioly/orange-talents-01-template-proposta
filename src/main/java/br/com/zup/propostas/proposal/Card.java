@@ -12,7 +12,10 @@ public class Card {
     @Column(nullable = false)
     private BigDecimal creditLimit;
 
-    private LocalDateTime blockedAt;
+    private boolean blocked;
+
+    @Column(nullable = false)
+    private String cardNumber;
 
     @OneToOne
     @JoinColumn(name = "proposal_id")
@@ -23,8 +26,37 @@ public class Card {
 
     }
 
-    public Card(BigDecimal creditLimit, CardProposal cardProposal) {
+    public Card(BigDecimal creditLimit, String cardNumber ,CardProposal cardProposal) {
         this.creditLimit = creditLimit;
+        this.cardNumber = cardNumber;
         this.cardProposal = cardProposal;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public BigDecimal getCreditLimit() {
+        return creditLimit;
+    }
+
+    public boolean getBlockedAt() {
+        return blocked;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public CardProposal getCardProposal() {
+        return cardProposal;
+    }
+
+    public void lockCard() {
+        blocked = true;
+    }
+
+    public boolean isBlocked() {
+        return blocked == true;
     }
 }

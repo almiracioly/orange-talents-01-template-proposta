@@ -1,6 +1,8 @@
 package br.com.zup.propostas.proposal.approvedcardassociation;
 
 import br.com.zup.propostas.proposal.*;
+import br.com.zup.propostas.shared.thirdpartyapiclient.card.ApprovedCardResponse;
+import br.com.zup.propostas.shared.thirdpartyapiclient.card.CardClient;
 import feign.FeignException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

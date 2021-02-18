@@ -1,4 +1,4 @@
-package br.com.zup.propostas.proposal.approvedcardassociation;
+package br.com.zup.propostas.shared.thirdpartyapiclient.card;
 
 import br.com.zup.propostas.proposal.Card;
 import br.com.zup.propostas.proposal.CardProposal;
@@ -23,6 +23,6 @@ public class ApprovedCardResponse {
     }
 
     public Card toModel(CardProposal cardProposal) {
-        return new Card(limite, cardProposal);
+        return new Card(limite, id,cardProposal);
     }
 }

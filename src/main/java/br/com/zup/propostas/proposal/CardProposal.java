@@ -52,6 +52,10 @@ public class CardProposal {
         return status;
     }
 
+    public String getApprovedCardNumber() {
+        return approvedCardNumber;
+    }
+
     public void updateStatus(CardProposalStatus cardProposalStatus) {
         status = cardProposalStatus;
     }
