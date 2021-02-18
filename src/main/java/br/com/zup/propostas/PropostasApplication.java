@@ -15,5 +15,13 @@ public class PropostasApplication {
     public static void main(String[] args) {
         SpringApplication.run(PropostasApplication.class, args);
     }
+
+    @RestController
+    public static class TestController {
+        @GetMapping("/testing-auth")
+        public String test(){
+            return "Everything is ok";
+        }
+    }
     
 }
