@@ -32,6 +32,7 @@ public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter 
         super.configure(http);
         http
                 .authorizeRequests()
+                .antMatchers("/actuator/prometheus").permitAll()
                 .anyRequest().authenticated()
                 .and().oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
     }
