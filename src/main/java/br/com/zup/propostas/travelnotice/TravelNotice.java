@@ -43,4 +43,16 @@ public class TravelNotice {
     public void setRequestingIp(String requestingIp) {
         this.requestingIp = requestingIp;
     }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public String getTravelDestiny() {
+        return travelDestiny;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
 }
