@@ -2,6 +2,8 @@ package br.com.zup.propostas.shared.thirdpartyapiclient.card;
 
 import br.com.zup.propostas.shared.thirdpartyapiclient.card.travelnoticenotification.NewTravelNoticeNotificationRequest;
 import br.com.zup.propostas.shared.thirdpartyapiclient.card.travelnoticenotification.NewTravelNoticeNotificationResponse;
+import br.com.zup.propostas.shared.thirdpartyapiclient.card.walletassociation.WalletAssociationRequest;
+import br.com.zup.propostas.shared.thirdpartyapiclient.card.walletassociation.WalletAssociationResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,4 +21,8 @@ public interface CardClient {
     @PostMapping("/cartoes/{id}/avisos")
     NewTravelNoticeNotificationResponse notifyNewTravelNotice(@PathVariable("id") String cardNumber,
                                                               @RequestBody @Valid NewTravelNoticeNotificationRequest notificationRequest);
+
+    @PostMapping("/cartoes/{id}/carteiras")
+    WalletAssociationResponse associateToWallet(@PathVariable("id") String cardNumber,
+                                                @RequestBody @Valid WalletAssociationRequest walletAssociationRequest);
 }
