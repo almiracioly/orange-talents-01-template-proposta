@@ -5,6 +5,7 @@ import br.com.zup.propostas.proposal.CardRepository;
 import br.com.zup.propostas.shared.thirdpartyapiclient.card.CardClient;
 import br.com.zup.propostas.shared.thirdpartyapiclient.card.CardLockRequest;
 import feign.FeignException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +20,12 @@ import java.util.Optional;
 public class NewCardLockController {
 
     private CardRepository cardRepository;
+    @Autowired
     private CardClient cardClient;
     private EntityManager entityManager;
 
-    public NewCardLockController(CardRepository cardRepository, CardClient cardClient, EntityManager entityManager) {
+    public NewCardLockController(CardRepository cardRepository, EntityManager entityManager) {
         this.cardRepository = cardRepository;
-        this.cardClient = cardClient;
         this.entityManager = entityManager;
     }
 
