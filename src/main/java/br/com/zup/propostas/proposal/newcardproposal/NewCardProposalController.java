@@ -2,10 +2,10 @@ package br.com.zup.propostas.proposal.newcardproposal;
 
 import br.com.zup.propostas.proposal.*;
 import feign.FeignException;
+import org.jasypt.util.text.AES256TextEncryptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -17,18 +17,21 @@ public class NewCardProposalController {
     private CardProposalRepository cardProposalRepository;
     private CreditAnalysisClient creditAnalysisClient;
 
+    @Value("${proposal.decrypt-password}")
+    private String encryptPassword;
+
     public NewCardProposalController(CardProposalRepository cardProposalRepository, CreditAnalysisClient creditAnalysisClient) {
         this.cardProposalRepository = cardProposalRepository;
         this.creditAnalysisClient = creditAnalysisClient;
     }
 
     @PostMapping("card-proposals")
-    public ResponseEntity<?> exec(@RequestBody @Valid NewCardProposalRequest request, UriComponentsBuilder uriBuilder){
-        if(cardProposalRepository.existsByPersonalDocument(request.getPersonalDocument()))
+    public ResponseEntity<?> exec(@RequestBody @Valid NewCardProposalRequest request, UriComponentsBuilder uriBuilder) {
+        if (cardProposalRepository.existsByPersonalDocument(request.getPersonalDocument()))
             return ResponseEntity.unprocessableEntity().build();
 
 
-        CardProposal cardProposal = request.toModel();
+        CardProposal cardProposal = request.toModel(encryptPassword);
         cardProposalRepository.save(cardProposal);
 
         cardProposal.updateStatus(getAnalysisStatusResponse(cardProposal));
@@ -38,7 +41,7 @@ public class NewCardProposalController {
         return ResponseEntity.created(resourceUrl).build();
     }
 
-    private CardProposalStatus getAnalysisStatusResponse(CardProposal cardProposal){
+    private CardProposalStatus getAnalysisStatusResponse(CardProposal cardProposal) {
         try {
             CreditAnalysisResponse analysisResponse = creditAnalysisClient
                     .analyze(new CreditAnalysisRequest(cardProposal));

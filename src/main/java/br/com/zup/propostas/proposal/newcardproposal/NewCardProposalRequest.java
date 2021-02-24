@@ -2,6 +2,7 @@ package br.com.zup.propostas.proposal.newcardproposal;
 
 import br.com.zup.propostas.proposal.CardProposal;
 import br.com.zup.propostas.shared.customannotation.cpforcnpj.CpfOrCnpj;
+import org.jasypt.util.text.AES256TextEncryptor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -35,8 +36,11 @@ public class NewCardProposalRequest {
         this.salary = salary;
     }
 
-    public CardProposal toModel() {
-        return new CardProposal(personalDocument, email, name, address.toModel(), salary);
+    public CardProposal toModel(String encryptPassword) {
+        AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
+        textEncryptor.setPassword(encryptPassword);
+
+        return new CardProposal(textEncryptor.encrypt(personalDocument), email, name, address.toModel(), salary);
     }
 
     public AddressRequest getAddress() {
